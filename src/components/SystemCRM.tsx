@@ -1,6 +1,7 @@
 import React from 'react';
 import { LayoutDashboard, Database, Settings, Search, Filter, MoreVertical, Phone, MessageSquare, Calendar, CheckCircle2, Clock, AlertCircle, Users, TrendingUp, BarChart3, ChevronDown } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, Cell } from 'recharts';
+import { motion } from 'motion/react';
 
 export default function SystemCRM() {
   const performanceData = [
@@ -18,97 +19,141 @@ export default function SystemCRM() {
     { name: '계약 완료', count: 9 },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+
   return (
-    <div className="space-y-12 animate-in fade-in duration-500">
-      <section>
-        <h1 className="text-3xl font-bold text-slate-900 mb-4">랜딩 & CRM 시스템 구축</h1>
-        <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+    <motion.div 
+      className="space-y-16"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.section variants={itemVariants} className="relative">
+        <div className="absolute top-0 right-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl -z-10"></div>
+        <h1 className="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">랜딩 & CRM <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">시스템 구축</span></h1>
+        <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-3xl">
           랜딩 페이지는 '예쁜 소개'가 아니라 <strong>'전환 장치'</strong>이며, 
           CRM은 단순 '리드 저장소'가 아니라 <strong>'영업 행동을 강제하는 워크플로우'</strong>입니다.
         </p>
-      </section>
+      </motion.section>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* 외부 노출 홈페이지 */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
-          <div className="flex items-center gap-3 mb-6">
-            <LayoutDashboard className="text-blue-600" size={24} />
-            <h2 className="text-2xl font-bold text-slate-900">외부 홈페이지 (전환용)</h2>
+        <motion.div variants={itemVariants} whileHover={{ y: -5 }} className="bg-white border border-slate-200/60 rounded-3xl p-8 shadow-lg shadow-slate-200/40 relative overflow-hidden group hover:border-blue-200 transition-colors">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20">
+              <LayoutDashboard size={28} />
+            </div>
+            <div>
+              <div className="text-xs font-black text-blue-500 tracking-widest uppercase mb-1">Frontend</div>
+              <h2 className="text-2xl font-bold text-slate-900">외부 홈페이지 (전환용)</h2>
+            </div>
           </div>
           
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div>
-              <h3 className="font-bold text-slate-900 mb-2">A. 사이트 구성 (모듈형 템플릿)</h3>
-              <p className="text-sm text-slate-600 mb-3">사업지 디테일이 늦어도 사이트는 "틀"을 먼저 만듭니다.</p>
-              <ul className="space-y-2 text-sm text-slate-600 list-disc list-inside bg-slate-50 p-4 rounded-xl">
-                <li><strong>메인:</strong> 사업지 요약 + 핵심 CTA 2개 (상담신청/방문예약)</li>
-                <li><strong>상세:</strong> 입지/교통/호재/특장점 (섹션 모듈)</li>
-                <li><strong>전환 전용 랜딩:</strong> 정보 밀도 최소화 + 폼 집중</li>
-                <li><strong>기타:</strong> FAQ, 개인정보 처리방침</li>
+              <h3 className="font-bold text-slate-900 mb-3 text-lg flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm">A</span>
+                사이트 구성 (모듈형 템플릿)
+              </h3>
+              <p className="text-sm text-slate-600 mb-4 bg-slate-50 p-3 rounded-xl border border-slate-100">사업지 디테일이 늦어도 사이트는 "틀"을 먼저 만듭니다.</p>
+              <ul className="space-y-3 text-sm text-slate-700">
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div><span><strong>메인:</strong> 사업지 요약 + 핵심 CTA 2개 (상담신청/방문예약)</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div><span><strong>상세:</strong> 입지/교통/호재/특장점 (섹션 모듈)</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div><span><strong>전환 전용 랜딩:</strong> 정보 밀도 최소화 + 폼 집중</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div><span><strong>기타:</strong> FAQ, 개인정보 처리방침</span></li>
               </ul>
             </div>
             
-            <div>
-              <h3 className="font-bold text-slate-900 mb-2">B. 전환 설계</h3>
-              <ul className="space-y-2 text-sm text-slate-600 list-disc list-inside">
-                <li>폼 필드는 최소화 (이름/연락처/관심유형)</li>
-                <li>추가 질문은 접수 후 자동 문자/톡으로 보강</li>
-                <li>톡상담과 웹폼 병행하되, 리드는 CRM에 동일 포맷으로 합류</li>
-                <li>A/B 테스트 대상: 헤드라인 / CTA 문구 / 폼 길이</li>
+            <div className="pt-6 border-t border-slate-100">
+              <h3 className="font-bold text-slate-900 mb-4 text-lg flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm">B</span>
+                전환 설계
+              </h3>
+              <ul className="space-y-3 text-sm text-slate-700">
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div><span>폼 필드는 최소화 (이름/연락처/관심유형)</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div><span>추가 질문은 접수 후 자동 문자/톡으로 보강</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div><span>톡상담과 웹폼 병행하되, 리드는 CRM에 동일 포맷으로 합류</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div><span>A/B 테스트 대상: 헤드라인 / CTA 문구 / 폼 길이</span></li>
               </ul>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* 내부 영업팀용 CRM */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
-          <div className="flex items-center gap-3 mb-6">
-            <Database className="text-indigo-600" size={24} />
-            <h2 className="text-2xl font-bold text-slate-900">내부 영업팀용 CRM (MVP)</h2>
+        <motion.div variants={itemVariants} whileHover={{ y: -5 }} className="bg-white border border-slate-200/60 rounded-3xl p-8 shadow-lg shadow-slate-200/40 relative overflow-hidden group hover:border-indigo-200 transition-colors">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-500/20">
+              <Database size={28} />
+            </div>
+            <div>
+              <div className="text-xs font-black text-indigo-500 tracking-widest uppercase mb-1">Backend</div>
+              <h2 className="text-2xl font-bold text-slate-900">내부 영업팀용 CRM (MVP)</h2>
+            </div>
           </div>
           
-          <div className="space-y-6">
-            <p className="text-sm text-slate-600">
+          <div className="space-y-8">
+            <p className="text-sm text-slate-600 leading-relaxed">
               기능 욕심을 내면 늪에 빠집니다. 분양 CRM MVP는 아래 필수 기능만 있으면 굴러갑니다.
             </p>
             
-            <div className="bg-indigo-50 p-5 rounded-xl border border-indigo-100">
-              <h3 className="font-bold text-indigo-900 mb-3">필수 기능 7가지</h3>
-              <ul className="space-y-3 text-sm text-indigo-800">
-                <li className="flex gap-2"><span className="font-bold">1. 리드 인박스:</span> 신규 리드 자동 유입, 중복/스팸 표시</li>
-                <li className="flex gap-2"><span className="font-bold">2. 리드 배정:</span> 담당자 자동 배정 및 즉시 알림</li>
-                <li className="flex gap-2"><span className="font-bold">3. 상태코드:</span> 신규 → 연결/부재 → 예약 → 방문 → 계약 (표준화)</li>
-                <li className="flex gap-2"><span className="font-bold">4. 활동기록:</span> 콜/문자 로그, 다음 액션(재콜 시간)</li>
-                <li className="flex gap-2"><span className="font-bold">5. SLA 모니터링:</span> 10분 내 1차 콜 위반 알림</li>
-                <li className="flex gap-2"><span className="font-bold">6. 대시보드:</span> 담당자별 처리속도, 채널별 유효 리드율</li>
-                <li className="flex gap-2"><span className="font-bold">7. 내보내기/권한:</span> 엑셀 백업 및 권한 관리</li>
+            <div className="bg-indigo-50/80 p-6 rounded-2xl border border-indigo-100/50">
+              <h3 className="font-bold text-indigo-900 mb-4 flex items-center gap-2">
+                <CheckCircle2 size={18} className="text-indigo-600" /> 필수 기능 7가지
+              </h3>
+              <ul className="space-y-3 text-sm text-indigo-900/80">
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0"></div><span><strong className="text-indigo-900">1. 리드 인박스:</strong> 신규 리드 자동 유입, 중복/스팸 표시</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0"></div><span><strong className="text-indigo-900">2. 리드 배정:</strong> 담당자 자동 배정 및 즉시 알림</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0"></div><span><strong className="text-indigo-900">3. 상태코드:</strong> 신규 → 연결/부재 → 예약 → 방문 → 계약 (표준화)</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0"></div><span><strong className="text-indigo-900">4. 활동기록:</strong> 콜/문자 로그, 다음 액션(재콜 시간)</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0"></div><span><strong className="text-indigo-900">5. SLA 모니터링:</strong> 10분 내 1차 콜 위반 알림</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0"></div><span><strong className="text-indigo-900">6. 대시보드:</strong> 담당자별 처리속도, 채널별 유효 리드율</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0"></div><span><strong className="text-indigo-900">7. 내보내기/권한:</strong> 엑셀 백업 및 권한 관리</span></li>
               </ul>
             </div>
             
-            <div>
-              <h3 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                <Settings size={16} /> 기술 스택 선택지
+            <div className="pt-2">
+              <h3 className="font-bold text-slate-900 mb-3 flex items-center gap-2 text-lg">
+                <Settings size={18} className="text-slate-500" /> 기술 스택 선택지
               </h3>
-              <ul className="space-y-2 text-sm text-slate-600 list-disc list-inside">
-                <li><strong>노코드/로우코드 CRM:</strong> 최단기(2~3주), 유지보수 쉬움</li>
-                <li><strong>경량 커스텀 웹CRM (권장):</strong> 필수 기능만 구현, 권한/확장성 균형</li>
+              <ul className="space-y-3 text-sm text-slate-700">
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-slate-400 shrink-0"></div><span><strong>노코드/로우코드 CRM:</strong> 최단기(2~3주), 유지보수 쉬움</span></li>
+                <li className="flex gap-3"><div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-slate-400 shrink-0"></div><span><strong>경량 커스텀 웹CRM (권장):</strong> 필수 기능만 구현, 권한/확장성 균형</span></li>
               </ul>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* CRM Mockup Section - Manager Dashboard */}
-      <section className="mt-16">
-        <div className="flex items-center gap-3 mb-6">
-          <BarChart3 className="text-slate-900" size={24} />
-          <h2 className="text-2xl font-bold text-slate-900">관리자 모니터링 대시보드 (Mockup)</h2>
+      <motion.section variants={itemVariants} className="mt-24">
+        <div className="flex items-center gap-4 mb-8">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 text-white flex items-center justify-center shadow-md shadow-slate-900/20">
+            <BarChart3 size={28} />
+          </div>
+          <div>
+            <div className="text-xs font-black text-slate-500 tracking-widest uppercase mb-1">Admin View</div>
+            <h2 className="text-2xl font-bold text-slate-900">관리자 모니터링 대시보드 (Mockup)</h2>
+          </div>
         </div>
-        <p className="text-slate-600 mb-8">
+        <p className="text-lg text-slate-600 mb-10 max-w-3xl">
           영업 관리자 및 대행사가 캠페인 성과와 영업팀의 퍼포먼스를 한눈에 파악하고 병목 구간을 찾아내는 화면입니다.
         </p>
 
-        <div className="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50 shadow-xl mb-12">
+        <div className="border border-slate-200/60 rounded-3xl overflow-hidden bg-slate-50/50 shadow-2xl shadow-slate-200/50 mb-16">
           {/* Top Bar */}
           <div className="bg-slate-900 text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -249,20 +294,25 @@ export default function SystemCRM() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* CRM Mockup Section - Agent Dashboard */}
-      <section>
-        <div className="flex items-center gap-3 mb-6">
-          <LayoutDashboard className="text-slate-900" size={24} />
-          <h2 className="text-2xl font-bold text-slate-900">영업팀 실무자 화면 (Mockup)</h2>
+      <motion.section variants={itemVariants} className="mt-24">
+        <div className="flex items-center gap-4 mb-8">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-500/20">
+            <LayoutDashboard size={28} />
+          </div>
+          <div>
+            <div className="text-xs font-black text-indigo-500 tracking-widest uppercase mb-1">Agent View</div>
+            <h2 className="text-2xl font-bold text-slate-900">영업팀 실무자 화면 (Mockup)</h2>
+          </div>
         </div>
-        <p className="text-slate-600 mb-8">
+        <p className="text-lg text-slate-600 mb-10 max-w-3xl">
           영업 담당자가 매일 보게 될 화면입니다. 직관적인 상태 관리와 SLA(응답 시간) 준수에 초점을 맞췄습니다.
         </p>
 
         {/* Mockup Container */}
-        <div className="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50 shadow-xl">
+        <div className="border border-slate-200/60 rounded-3xl overflow-hidden bg-slate-50/50 shadow-2xl shadow-slate-200/50">
           {/* Top Bar */}
           <div className="bg-white border-b border-slate-200 p-4 flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -437,7 +487,7 @@ export default function SystemCRM() {
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </motion.section>
+    </motion.div>
   );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Calendar, PieChart as PieChartIcon, DollarSign, BarChart } from 'lucide-react';
+import { Calendar, PieChart as PieChartIcon, DollarSign, BarChart, Clock, Target, Lightbulb } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { motion } from 'motion/react';
 
 export default function ScheduleBudget() {
   const ganttDataH1 = [
@@ -57,23 +58,40 @@ export default function ScheduleBudget() {
     { name: '예비비', value: 10, color: '#64748b' }, // slate-500
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+
   const renderGanttSection = (title: string, ganttData: any[], objectives: any[], startMonth: number) => (
-    <div className="flex flex-col lg:flex-row gap-6 mb-12">
+    <motion.div variants={itemVariants} className="flex flex-col lg:flex-row gap-8 mb-16">
       {/* Left: Gantt Chart */}
-      <div className="flex-1 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col overflow-hidden">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-bold text-slate-900">{title}</h3>
-          <span className="text-xs font-medium text-slate-400 bg-slate-100 px-2 py-1 rounded">M = Month</span>
+      <div className="flex-1 bg-white border border-slate-200/60 rounded-3xl p-8 shadow-lg shadow-slate-200/40 flex flex-col overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10"></div>
+        <div className="flex justify-between items-center mb-8">
+          <h3 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
+            <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
+            {title}
+          </h3>
+          <span className="text-[10px] font-black text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full uppercase tracking-widest">M = Month</span>
         </div>
         
         <div className="flex-1 overflow-x-auto">
-          <div className="w-full">
+          <div className="min-w-[600px]">
             {/* Header */}
-            <div className="flex border-b border-slate-100 pb-3 mb-4">
-              <div className="w-[35%] text-xs font-bold text-slate-400 uppercase tracking-wider">Activity</div>
+            <div className="flex border-b border-slate-100 pb-4 mb-6">
+              <div className="w-[35%] text-[10px] font-black text-slate-400 uppercase tracking-widest">Activity</div>
               <div className="w-[65%] flex">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="flex-1 text-center text-sm font-bold text-slate-700">
+                  <div key={i} className="flex-1 text-center text-sm font-black text-slate-800">
                     M{startMonth + i}
                   </div>
                 ))}
@@ -81,7 +99,7 @@ export default function ScheduleBudget() {
             </div>
             
             {/* Rows */}
-            <div className="space-y-4 relative">
+            <div className="space-y-5 relative">
               {/* Grid lines */}
               <div className="absolute top-0 bottom-0 right-0 w-[65%] flex pointer-events-none">
                 {Array.from({ length: 6 }).map((_, i) => (
@@ -90,9 +108,9 @@ export default function ScheduleBudget() {
               </div>
               
               {ganttData.map((row, idx) => (
-                <div key={idx} className="flex items-center relative z-10">
-                  <div className="w-[35%] pr-2 text-[13px] font-bold text-slate-700 leading-tight">{row.title}</div>
-                  <div className="w-[65%] flex h-6 relative">
+                <div key={idx} className="flex items-center relative z-10 group">
+                  <div className="w-[35%] pr-4 text-sm font-bold text-slate-700 leading-tight transition-colors group-hover:text-blue-600">{row.title}</div>
+                  <div className="w-[65%] flex h-7 relative">
                     {Array.from({ length: 6 }).map((_, i) => {
                       const currentMonth = startMonth + i;
                       const isActive = row.spans.some((span: number[]) => currentMonth >= span[0] && currentMonth <= span[1]);
@@ -102,7 +120,13 @@ export default function ScheduleBudget() {
                       return (
                         <div key={i} className="flex-1 px-0.5">
                           {isActive && (
-                            <div className={`h-full ${row.color} ${isStart ? 'rounded-l-md' : ''} ${isEnd ? 'rounded-r-md' : ''}`}></div>
+                            <motion.div 
+                              initial={{ scaleX: 0, originX: 0 }}
+                              whileInView={{ scaleX: 1 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.5, delay: 0.2 + (idx * 0.05) }}
+                              className={`h-full ${row.color} ${isStart ? 'rounded-l-lg' : ''} ${isEnd ? 'rounded-r-lg' : ''} shadow-sm group-hover:brightness-110 transition-all`}
+                            ></motion.div>
                           )}
                         </div>
                       );
@@ -115,80 +139,110 @@ export default function ScheduleBudget() {
         </div>
         
         {/* Bottom Note */}
-        <div className="mt-8 bg-amber-50 border border-amber-100 rounded-xl p-4 flex gap-3 items-start">
-          <div className="text-amber-500 mt-0.5">💡</div>
-          <p className="text-sm text-slate-700">
+        <div className="mt-10 bg-blue-50/80 border border-blue-100 rounded-2xl p-5 flex gap-4 items-start">
+          <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center shrink-0 border border-blue-200">
+            <Lightbulb size={20} className="text-blue-600" />
+          </div>
+          <p className="text-sm text-slate-700 leading-relaxed">
             "6개월로 늘리되, 월 1회 몰아서 하면 성과가 나오지 않습니다.<br/>
-            최소 <strong>주간 단위</strong>로 '운영 루틴'이 유지되어야 합니다."
+            최소 <strong className="text-blue-700">주간 단위</strong>로 '운영 루틴'이 유지되어야 합니다."
           </p>
         </div>
       </div>
       
       {/* Right: Objectives */}
-      <div className="w-full lg:w-80 bg-slate-900 rounded-2xl p-6 text-white shadow-sm shrink-0">
-        <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-          <div className="w-1 h-5 bg-blue-500 rounded-full"></div>
+      <div className="w-full lg:w-96 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 text-white shadow-2xl shadow-slate-900/20 shrink-0 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -z-10"></div>
+        <h3 className="text-xl font-bold mb-8 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-sm border border-white/10">
+            <Target size={20} className="text-blue-400" />
+          </div>
           기간별 핵심 목표
         </h3>
         
-        <div className="space-y-6 relative before:absolute before:inset-0 before:ml-[15px] before:h-full before:w-px before:bg-slate-700">
+        <div className="space-y-8 relative before:absolute before:inset-0 before:ml-[19px] before:h-full before:w-px before:bg-slate-700/50">
           {objectives.map((obj, idx) => (
-            <div key={idx} className="relative flex gap-4">
-              <div className="w-8 h-8 rounded-full border-2 border-slate-600 bg-slate-900 flex items-center justify-center text-xs font-bold text-blue-400 shrink-0 z-10">
+            <motion.div 
+              key={idx} 
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="relative flex gap-5 group"
+            >
+              <div className="w-10 h-10 rounded-full border-2 border-slate-700 bg-slate-900 flex items-center justify-center text-xs font-black text-blue-400 shrink-0 z-10 group-hover:border-blue-500 transition-colors">
                 {obj.month}
               </div>
               <div className="pt-1.5">
-                <h4 className="font-bold text-sm mb-1">{obj.title}</h4>
-                <p className="text-xs text-slate-400 leading-relaxed">{obj.desc}</p>
+                <h4 className="font-bold text-base mb-1.5 group-hover:text-blue-400 transition-colors">{obj.title}</h4>
+                <p className="text-sm text-slate-400 leading-relaxed">{obj.desc}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 
   return (
-    <div className="space-y-12 animate-in fade-in duration-500">
-      <section>
-        <h1 className="text-3xl font-bold text-slate-900 mb-4">일정 및 예산 계획</h1>
-        <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+    <motion.div 
+      className="space-y-16"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.section variants={itemVariants} className="relative">
+        <div className="absolute top-0 right-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl -z-10"></div>
+        <h1 className="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">일정 및 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">예산 계획</span></h1>
+        <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-3xl">
           이벤트 드리븐(모집공고/홍보관 오픈/청약/계약) 구간을 유연하게 배치할 수 있는 
           <strong> 12개월 5억 원 규모</strong>의 실행 계획입니다.
         </p>
-      </section>
+      </motion.section>
 
       {/* 12개월 일정 간트 차트 */}
-      <div>
-        <div className="flex items-center gap-3 mb-8">
-          <BarChart className="text-blue-600" size={24} />
-          <h2 className="text-2xl font-bold text-slate-900">12개월 실행 로드맵 (Gantt)</h2>
+      <motion.div variants={itemVariants}>
+        <div className="flex items-center gap-4 mb-10">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20">
+            <BarChart size={28} />
+          </div>
+          <div>
+            <div className="text-xs font-black text-blue-500 tracking-widest uppercase mb-1">Timeline</div>
+            <h2 className="text-2xl font-bold text-slate-900">12개월 실행 로드맵 (Gantt)</h2>
+          </div>
         </div>
         
         {renderGanttSection('상반기 실행 로드맵 (M1~M6)', ganttDataH1, objectivesH1, 1)}
         {renderGanttSection('하반기 실행 로드맵 (M7~M12)', ganttDataH2, objectivesH2, 7)}
-      </div>
+      </motion.div>
 
       {/* 예산안 */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
-        <div className="flex items-center gap-3 mb-8">
-          <PieChartIcon className="text-indigo-600" size={24} />
-          <h2 className="text-2xl font-bold text-slate-900">연간 예산 배분 (총 5억 원)</h2>
+      <motion.div variants={itemVariants} className="bg-white border border-slate-200/60 rounded-3xl p-10 shadow-lg shadow-slate-200/40 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-bl-full -z-10"></div>
+        <div className="flex items-center gap-4 mb-10">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-500/20">
+            <PieChartIcon size={28} />
+          </div>
+          <div>
+            <div className="text-xs font-black text-indigo-500 tracking-widest uppercase mb-1">Budget</div>
+            <h2 className="text-2xl font-bold text-slate-900">연간 예산 배분 (총 5억 원)</h2>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
           {/* Donut Chart */}
-          <div className="h-64 w-full">
+          <div className="h-80 w-full relative">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={pieData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={70}
-                  outerRadius={100}
-                  paddingAngle={2}
+                  innerRadius={80}
+                  outerRadius={110}
+                  paddingAngle={5}
                   dataKey="value"
+                  stroke="none"
                 >
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -196,67 +250,87 @@ export default function ScheduleBudget() {
                 </Pie>
                 <Tooltip 
                   formatter={(value: number) => [`${value}백만 원`, '금액']}
-                  contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                  contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
                 />
                 <Legend verticalAlign="bottom" height={36} />
               </PieChart>
             </ResponsiveContainer>
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">Total</span>
+              <span className="text-slate-900 text-3xl font-black">5.0억</span>
+            </div>
           </div>
 
           {/* Budget Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-600">
+              <thead className="bg-slate-50/50 border-b border-slate-100 text-slate-500">
                 <tr>
-                  <th className="px-4 py-3 font-semibold">구분</th>
-                  <th className="px-4 py-3 font-semibold text-right">금액 (원)</th>
-                  <th className="px-4 py-3 font-semibold text-right">비중</th>
+                  <th className="px-4 py-4 font-black uppercase tracking-widest text-[10px]">구분</th>
+                  <th className="px-4 py-4 font-black uppercase tracking-widest text-[10px] text-right">금액 (원)</th>
+                  <th className="px-4 py-4 font-black uppercase tracking-widest text-[10px] text-right">비중</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-50">
                 {budgetData.map((row, idx) => (
-                  <tr key={idx}>
-                    <td className="px-4 py-4 font-bold text-slate-900">
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: pieData[idx].color }}></div>
+                  <tr key={idx} className="group hover:bg-slate-50/50 transition-colors">
+                    <td className="px-4 py-5 font-bold text-slate-900">
+                      <div className="flex items-center gap-3">
+                        <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: pieData[idx].color }}></div>
                         {row.category}
                       </div>
                     </td>
-                    <td className="px-4 py-4 text-right font-mono font-medium text-slate-700">{row.amount}</td>
-                    <td className="px-4 py-4 text-right font-semibold text-blue-600">{row.percent}</td>
+                    <td className="px-4 py-5 text-right font-mono font-bold text-slate-700">{row.amount}</td>
+                    <td className="px-4 py-5 text-right font-black text-blue-600">{row.percent}</td>
                   </tr>
                 ))}
               </tbody>
-              <tfoot className="bg-slate-50 border-t border-slate-200 font-bold text-slate-900">
+              <tfoot className="bg-slate-900 text-white rounded-xl overflow-hidden">
                 <tr>
-                  <td className="px-4 py-4">합계</td>
-                  <td className="px-4 py-4 text-right font-mono text-lg">500,000,000</td>
-                  <td className="px-4 py-4 text-right text-blue-600">100%</td>
+                  <td className="px-6 py-5 font-bold rounded-l-2xl">합계</td>
+                  <td className="px-6 py-5 text-right font-mono text-xl font-black">500,000,000</td>
+                  <td className="px-6 py-5 text-right text-blue-400 font-black rounded-r-2xl">100%</td>
                 </tr>
               </tfoot>
             </table>
           </div>
         </div>
 
-        <div className="space-y-4">
-          <h3 className="font-bold text-slate-900">세부 내용</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="space-y-6">
+          <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <div className="w-1.5 h-6 bg-indigo-600 rounded-full"></div>
+            세부 내용
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {budgetData.map((row, idx) => (
-              <div key={idx} className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                <div className="font-bold text-slate-900 text-sm mb-1">{row.category}</div>
-                <div className="text-xs text-slate-600">{row.desc}</div>
-              </div>
+              <motion.div 
+                key={idx} 
+                whileHover={{ y: -3 }}
+                className="bg-slate-50/50 p-5 rounded-2xl border border-slate-100 hover:border-indigo-200 hover:bg-white hover:shadow-md transition-all"
+              >
+                <div className="font-bold text-slate-900 text-base mb-2 flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: pieData[idx].color }}></div>
+                  {row.category}
+                </div>
+                <div className="text-sm text-slate-600 leading-relaxed">{row.desc}</div>
+              </motion.div>
             ))}
           </div>
         </div>
         
-        <div className="mt-8 bg-amber-50 border border-amber-200 p-4 rounded-xl text-sm flex gap-3 items-start text-amber-800">
-          <DollarSign className="shrink-0 mt-0.5" size={18} />
-          <p>
-            <strong>구축비를 줄여서 광고비로 밀어 넣으면</strong> 초반 2~3개월은 "리드만 쌓이고 영업 전환이 안 되는" 구간이 나올 확률이 높습니다. CRM·SLA·상태코드가 안정화되지 않으면 CPL 최적화만 하게 됩니다.
+        <motion.div 
+          whileHover={{ scale: 1.01 }}
+          className="mt-12 bg-amber-50/80 border border-amber-100 p-6 rounded-3xl text-sm flex gap-5 items-start text-amber-900 shadow-sm"
+        >
+          <div className="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center shrink-0 border border-amber-200">
+            <DollarSign className="text-amber-600" size={24} />
+          </div>
+          <p className="leading-relaxed">
+            <strong className="text-amber-700 text-lg block mb-1">구축비 최적화의 함정</strong>
+            구축비를 줄여서 광고비로 밀어 넣으면 초반 2~3개월은 "리드만 쌓이고 영업 전환이 안 되는" 구간이 나올 확률이 높습니다. <strong className="text-amber-700 underline underline-offset-4">CRM·SLA·상태코드가 안정화되지 않으면 CPL 최적화만 하게 됩니다.</strong>
           </p>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }
