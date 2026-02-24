@@ -118,15 +118,23 @@ export default function ScheduleBudget() {
                       const isEnd = row.spans.some((span: number[]) => currentMonth === span[1]);
                       
                       return (
-                        <div key={i} className="flex-1 px-0.5">
+                        <div key={i} className="flex-1 px-0.5 relative">
                           {isActive && (
-                            <motion.div 
-                              initial={{ scaleX: 0, originX: 0 }}
-                              whileInView={{ scaleX: 1 }}
-                              viewport={{ once: true }}
-                              transition={{ duration: 0.5, delay: 0.2 + (idx * 0.05) }}
-                              className={`h-full ${row.color} ${isStart ? 'rounded-l-lg' : ''} ${isEnd ? 'rounded-r-lg' : ''} shadow-sm group-hover:brightness-110 transition-all`}
-                            ></motion.div>
+                            <div className="relative h-full w-full">
+                              <motion.div 
+                                initial={{ scaleX: 0, originX: 0 }}
+                                whileInView={{ scaleX: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: 0.2 + (idx * 0.05) }}
+                                className={`h-full ${row.color} ${isStart ? 'rounded-l-lg' : ''} ${isEnd ? 'rounded-r-lg' : ''} shadow-sm group-hover:brightness-110 transition-all`}
+                              />
+                              {/* Dynamic Progress Shine */}
+                              <motion.div 
+                                animate={{ x: ["-100%", "200%"] }}
+                                transition={{ duration: 2, repeat: Infinity, ease: "linear", delay: idx * 0.2 }}
+                                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"
+                              />
+                            </div>
                           )}
                         </div>
                       );

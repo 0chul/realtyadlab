@@ -140,13 +140,44 @@ export default function SystemCRM() {
 
       {/* CRM Mockup Section - Manager Dashboard */}
       <motion.section variants={itemVariants} className="mt-24">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 text-white flex items-center justify-center shadow-md shadow-slate-900/20">
-            <BarChart3 size={28} />
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 text-white flex items-center justify-center shadow-md shadow-slate-900/20">
+              <BarChart3 size={28} />
+            </div>
+            <div>
+              <div className="text-xs font-black text-slate-500 tracking-widest uppercase mb-1">Admin View</div>
+              <h2 className="text-2xl font-bold text-slate-900">관리자 모니터링 대시보드 (Mockup)</h2>
+            </div>
           </div>
-          <div>
-            <div className="text-xs font-black text-slate-500 tracking-widest uppercase mb-1">Admin View</div>
-            <h2 className="text-2xl font-bold text-slate-900">관리자 모니터링 대시보드 (Mockup)</h2>
+          
+          {/* Live Activity Simulation */}
+          <div className="bg-emerald-50 border border-emerald-100 rounded-2xl px-4 py-2 flex items-center gap-3">
+            <div className="relative">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
+              <div className="absolute inset-0 w-2 h-2 bg-emerald-500 rounded-full"></div>
+            </div>
+            <div className="text-xs font-bold text-emerald-700">
+              <motion.span
+                animate={{ opacity: [1, 0.5, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                LIVE: 신규 리드 유입 중...
+              </motion.span>
+            </div>
+            <div className="flex -space-x-2">
+              {[...Array(3)].map((_, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ scale: 0, x: 10 }}
+                  animate={{ scale: 1, x: 0 }}
+                  transition={{ delay: i * 0.5 }}
+                  className="w-6 h-6 rounded-full bg-white border-2 border-emerald-50 flex items-center justify-center text-[10px] font-bold text-slate-600 shadow-sm"
+                >
+                  {['김', '이', '박'][i]}
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
         <p className="text-lg text-slate-600 mb-10 max-w-3xl">

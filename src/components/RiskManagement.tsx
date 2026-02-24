@@ -46,7 +46,7 @@ export default function RiskManagement() {
     >
       <motion.section variants={itemVariants} className="relative">
         <div className="absolute top-0 right-10 w-64 h-64 bg-red-400/10 rounded-full blur-3xl -z-10"></div>
-        <h1 className="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">리스크 관리 <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600">(악마의 변호사)</span></h1>
+        <h1 className="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">리스크 관리</h1>
         <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-3xl">
           이 구조에서 가장 흔한 실패 원인은 광고 자체가 아니라 <strong>운영의 디테일</strong>입니다. 
           발생 가능한 리스크를 사전에 정의하고 명확한 대응책을 수립하여 프로젝트의 안정성을 확보합니다.

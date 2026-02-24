@@ -73,7 +73,31 @@ export default function App() {
         w-full md:w-72 bg-slate-900 text-slate-300 flex-shrink-0 z-40
         transition-transform duration-300 ease-in-out flex flex-col border-r border-slate-800
       `}>
-        <div className="p-8 hidden md:block">
+        {/* Animated Background Elements for Sidebar */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.2, 1],
+              rotate: [0, 90, 0],
+              x: [0, 50, 0],
+              y: [0, 30, 0]
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-20 -left-20 w-64 h-64 bg-blue-500/30 rounded-full blur-[80px]"
+          />
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.5, 1],
+              rotate: [0, -120, 0],
+              x: [0, -40, 0],
+              y: [0, 60, 0]
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-20 right-0 w-80 h-80 bg-indigo-500/20 rounded-full blur-[100px]"
+          />
+        </div>
+
+        <div className="p-8 hidden md:block relative z-10">
           <div className="font-bold text-2xl text-white flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
               <Target className="text-white" size={24} />
